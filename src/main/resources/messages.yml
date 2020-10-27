@@ -1,0 +1,15 @@
+config-version: 1
+
+# The prefix that is displayed in front of almost every single message.
+prefix: "&8[&6Reclaim&8] &r"
+
+# Console executes players-only command:
+not-player: "&eYou must be a player to execute that command."
+
+# Player does not have permission.
+# Use %permission% for the required permission node.
+no-permission: "&eYou need the &f%permission% &epermission to do that."
+
+# Player provided invalid/insufficient command arguments.
+# Use %usage% for the expected usage.
+invalid-args: "&eIncorrect usage! Did you mean: &f%usage%"
