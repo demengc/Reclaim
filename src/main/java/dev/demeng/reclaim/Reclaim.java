@@ -6,7 +6,7 @@ import dev.demeng.demlib.command.CommandMessages;
 import dev.demeng.demlib.core.DemLib;
 import dev.demeng.demlib.file.YamlFile;
 import dev.demeng.demlib.message.MessageUtils;
-import dev.demeng.reclaim.command.command.ReclaimCmd;
+import dev.demeng.reclaim.command.ReclaimCmd;
 import dev.demeng.reclaim.data.RewardsManager;
 import dev.demeng.reclaim.task.CooldownTimer;
 import lombok.Getter;

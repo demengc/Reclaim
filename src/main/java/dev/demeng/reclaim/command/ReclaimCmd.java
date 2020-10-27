@@ -1,4 +1,4 @@
-package dev.demeng.reclaim.command.command;
+package dev.demeng.reclaim.command;
 
 import dev.demeng.demlib.command.CustomCommand;
 import dev.demeng.reclaim.Reclaim;

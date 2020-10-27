@@ -2,6 +2,7 @@ package dev.demeng.reclaim.menu;
 
 import dev.demeng.demlib.item.ItemCreator;
 import dev.demeng.demlib.menu.Menu;
+import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.demlib.time.TimeFormatter;
 import dev.demeng.reclaim.Reclaim;
 import dev.demeng.reclaim.util.ItemDeserializer;
@@ -86,8 +87,16 @@ public class ReclaimMenu extends Menu {
             }
 
             for (String cmd : section.getStringList("commands")) {
-              Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+              Bukkit.dispatchCommand(
+                  Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
             }
+
+            MessageUtils.tell(
+                player,
+                Objects.requireNonNull(i.getMessages().getString("reward-claimed"))
+                    .replace("%reward%", name));
+
+            player.closeInventory();
           });
     }
 
@@ -111,7 +120,7 @@ public class ReclaimMenu extends Menu {
     } else {
 
       for (String line : section.getStringList("cooldown-lore")) {
-        lore.add(line.replace("%remaining%", new TimeFormatter(remaining).format()));
+        lore.add(line.replace("%remaining%", new TimeFormatter(remaining / 1000).format()));
       }
     }
 

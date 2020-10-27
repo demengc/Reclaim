@@ -13,3 +13,6 @@ no-permission: "&eYou need the &f%permission% &epermission to do that."
 # Player provided invalid/insufficient command arguments.
 # Use %usage% for the expected usage.
 invalid-args: "&eIncorrect usage! Did you mean: &f%usage%"
+
+# After a reward is claimed. Use %id% for the name of the reward.
+reward-claimed: "&eYou have claimed your &f%reward% &ereward!"
