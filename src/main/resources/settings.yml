@@ -1,19 +1,48 @@
 config-version: 1
 
+# GUI settings.
+gui:
+  # The number of slots in the GUI. Must be 54 or smaller and a multiple of 9.
+  size: 36
+  # The GUI title.
+  title: "&cReclaim"
+  # Information for the "dummy button", which is displayed if hte reward has a cooldown on it
+  # or if they don't have permission.
+  dummy-button:
+    material: "IRON_BARS"
+    # Use %reward% for the name of the reward.
+    name: "&4&l%reward% (Unavailable)"
+    # Lore used if its because they don't have permission for this reward.
+    permision-lore:
+      - "&cYou do not have permission to claim this."
+      - "&cBuy a rank on our store for access!"
+    # Lore used if its because the reward is on cooldown for the player.
+    # Use %remaining% for the remaining amount of time.
+    cooldown-lore:
+      - "&cThis reward is current on cooldown."
+      - "&cCome back in &e%remaining%&c."
+
 # List of reclaimable rewards.
 # The order of rewards matters. The plugin will go from top to bottom of this list to find a reward for the player.
 rewards:
-  1:
+  # The ID of the reward that is used in dev.demeng.reclaim.data storage.
+  nothing:
     # The permission required to claim.
     permission: "reclaim.nothing"
     # The cooldown for this reward, in seconds.
     cooldown: 5
-    # The slot of this item in the GUI.
-    slot: 0
+    # The slot of this item in the GUI. First slot = 1.
+    slot: 1
     # The material representing this reward in the GUI.
     material: "DIRT"
+    # The display name for the reward in the GUI.
+    name: "&2&lLiterally Nothing"
+    # The lore for the reward in the GUi.
+    lore:
+      - "&aA very useless reward, used for testing."
+      - "&aYou can claim this every &f5 seconds&a."
     # The amount of Vault currency the player will be given.
-    money: 1
+    money: 10.5
     # Items to give away.
     items:
       # The name of the material.

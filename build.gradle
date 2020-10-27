@@ -12,7 +12,7 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 shadowJar {
-    relocate 'dev.demeng.demlib', 'dev.demeng.friends.shaded.demlib'
+    relocate 'dev.demeng.demlib', 'dev.demeng.reclaim.shaded.demlib'
 }
 
 repositories {
@@ -31,6 +31,7 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
     compile 'com.github.Demeng7215:DemLib:4.7.2'
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
