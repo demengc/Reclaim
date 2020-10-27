@@ -1,5 +1,5 @@
 name: Reclaim
-version: @version@
+version: 1.0.0
 main: dev.demeng.reclaim.Reclaim
 api-version: 1.16
 depend: [ Vault ]
