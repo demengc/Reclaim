@@ -8,6 +8,7 @@ import dev.demeng.demlib.file.YamlFile;
 import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.reclaim.command.command.ReclaimCmd;
 import dev.demeng.reclaim.data.RewardsManager;
+import dev.demeng.reclaim.task.CooldownTimer;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,6 +60,9 @@ public final class Reclaim extends JavaPlugin {
       MessageUtils.error(ex, "Failed to register commands.", true);
       return;
     }
+
+    getLogger().info("Starting tasks...");
+    new CooldownTimer(this);
 
     MessageUtils.console("&aReclaim v" + Common.getVersion() + " has been successfully enabled.");
   }

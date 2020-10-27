@@ -2,6 +2,7 @@ package dev.demeng.reclaim.data;
 
 import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.reclaim.Reclaim;
+import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class RewardsManager {
 
   private final Reclaim i;
-  private final Map<UUID, Map<String, Long>> cooldowns;
+  @Getter private final Map<UUID, Map<String, Long>> cooldowns;
 
   public RewardsManager(Reclaim i) {
 
@@ -64,6 +65,31 @@ public class RewardsManager {
     playerCooldowns.put(id, expiry);
 
     cooldowns.put(player, playerCooldowns);
+  }
+
+  public void removeCooldown(UUID player, String id) {
+
+    for (Map.Entry<UUID, Map<String, Long>> entry : cooldowns.entrySet()) {
+
+      if (entry.getKey().equals(player)) {
+
+        final Map<String, Long> playerCooldowns = new HashMap<>(entry.getValue());
+
+        playerCooldowns.remove(id);
+        cooldowns.put(entry.getKey(), playerCooldowns);
+
+        return;
+      }
+
+      i.getData().set(player.toString() + "." + id, null);
+
+      try {
+        i.getDataFile().saveConfig();
+
+      } catch (IOException ex) {
+        MessageUtils.error(ex, "Failed to save data.", false);
+      }
+    }
   }
 
   public long getRemainingCooldown(UUID player, String id) {
