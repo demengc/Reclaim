@@ -1,8 +1,10 @@
 package dev.demeng.reclaim.data;
 
+import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.reclaim.Reclaim;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,10 +12,12 @@ import java.util.UUID;
 
 public class RewardsManager {
 
+  private final Reclaim i;
   private final Map<UUID, Map<String, Long>> cooldowns;
 
   public RewardsManager(Reclaim i) {
 
+    this.i = i;
     this.cooldowns = new HashMap<>();
 
     final ConfigurationSection section = i.getData().getConfigurationSection("cooldowns");
@@ -44,6 +48,15 @@ public class RewardsManager {
         cooldowns.put(entry.getKey(), playerCooldowns);
 
         return;
+      }
+
+      i.getData().set(player.toString() + "." + id, expiry);
+
+      try {
+        i.getDataFile().saveConfig();
+
+      } catch (IOException ex) {
+        MessageUtils.error(ex, "Failed to save data.", false);
       }
     }
 

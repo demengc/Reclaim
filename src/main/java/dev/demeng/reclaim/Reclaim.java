@@ -38,6 +38,8 @@ public final class Reclaim extends JavaPlugin {
       return;
     }
 
+    MessageUtils.setPrefix(getMessages().getString("prefix"));
+
     getLogger().info("Loading data...");
     manager = new RewardsManager(this);
 
