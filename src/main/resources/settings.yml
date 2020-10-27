@@ -19,13 +19,13 @@ gui:
     # Lore used if its because the reward is on cooldown for the player.
     # Use %remaining% for the remaining amount of time.
     cooldown-lore:
-      - "&cThis reward is current on cooldown."
+      - "&cThis reward is currently on cooldown."
       - "&cCome back in &e%remaining%&c."
 
 # List of reclaimable rewards.
 # The order of rewards matters. The plugin will go from top to bottom of this list to find a reward for the player.
 rewards:
-  # The ID of the reward that is used in dev.demeng.reclaim.data storage.
+  # The ID of the reward that is used in data storage.
   nothing:
     # The permission required to claim.
     permission: "reclaim.nothing"
@@ -58,4 +58,4 @@ rewards:
           PROTECTION_ENVIRONMENTAL: 20
     # List of commands to execute.
     commands:
-      - "broadcast %player% has claimed a reward!"
+      - "broadcast %player% has claimed the %reward% reward!"
