@@ -18,6 +18,12 @@ public class ReclaimCmd extends CustomCommand {
 
   @Override
   protected void run(CommandSender sender, String[] args) {
-    new ReclaimMenu(i, (Player) sender);
+
+    final Player p = (Player) sender;
+
+    if (args.length != 1) {
+      new ReclaimMenu(i, p);
+      return;
+    }
   }
 }
