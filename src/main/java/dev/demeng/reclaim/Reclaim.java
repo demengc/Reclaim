@@ -1,9 +1,12 @@
 package dev.demeng.reclaim;
 
 import dev.demeng.demlib.Common;
+import dev.demeng.demlib.Registerer;
+import dev.demeng.demlib.command.CommandMessages;
 import dev.demeng.demlib.core.DemLib;
 import dev.demeng.demlib.file.YamlFile;
 import dev.demeng.demlib.message.MessageUtils;
+import dev.demeng.reclaim.command.command.ReclaimCmd;
 import dev.demeng.reclaim.data.RewardsManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -41,6 +44,17 @@ public final class Reclaim extends JavaPlugin {
     getLogger().info("Hooking into Vault...");
     if (!setupEconomy()) {
       MessageUtils.error(null, "Failed to hook into Vault.", true);
+      return;
+    }
+
+    getLogger().info("Registering commands...");
+    DemLib.setCommandMessages(new CommandMessages(getMessages()));
+
+    try {
+      Registerer.registerCommand(new ReclaimCmd(this));
+
+    } catch (NoSuchFieldException | IllegalAccessException ex) {
+      MessageUtils.error(ex, "Failed to register commands.", true);
       return;
     }
 
