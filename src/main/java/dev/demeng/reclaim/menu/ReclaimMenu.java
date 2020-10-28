@@ -2,7 +2,6 @@ package dev.demeng.reclaim.menu;
 
 import dev.demeng.demlib.item.ItemCreator;
 import dev.demeng.demlib.menu.Menu;
-import dev.demeng.demlib.menu.MenuButton;
 import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.demlib.time.TimeFormatter;
 import dev.demeng.reclaim.Reclaim;
@@ -11,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,83 +46,59 @@ public class ReclaimMenu extends Menu {
       final long remaining = i.getManager().getRemainingCooldown(player.getUniqueId(), reward);
 
       if (remaining != -1) {
-        setItem(slot, getDummy(name, remaining, false), null);
+        setItem(slot, getDummy(name, remaining, false), event -> open(player));
         continue;
       }
 
-      final MenuButton button =
-          new MenuButton(
-              slot,
-              ItemCreator.quickBuild(
-                  ItemCreator.getMaterial(Objects.requireNonNull(section.getString("material"))),
-                  Objects.requireNonNull(name),
-                  section.getStringList("lore")),
-              event -> {
-                final long newRemaining =
-                    i.getManager().getRemainingCooldown(player.getUniqueId(), reward);
+      setItem(
+          slot,
+          ItemCreator.quickBuild(
+              ItemCreator.getMaterial(Objects.requireNonNull(section.getString("material"))),
+              Objects.requireNonNull(name),
+              section.getStringList("lore")),
+          event -> {
+            final long newRemaining =
+                i.getManager().getRemainingCooldown(player.getUniqueId(), reward);
 
-                if (newRemaining != -1) {
-                  setItem(slot, getDummy(name, newRemaining, false), null);
-                  return;
-                }
+            if (newRemaining != -1) {
+              setItem(slot, getDummy(name, newRemaining, false), null);
+              return;
+            }
 
-                i.getManager()
-                    .setCooldown(
-                        player.getUniqueId(),
-                        reward,
-                        System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
+            i.getManager()
+                .setCooldown(
+                    player.getUniqueId(),
+                    reward,
+                    System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
 
-                final double money = section.getDouble("money");
+            final double money = section.getDouble("money");
 
-                if (money != 0) {
-                  i.getEconomy().depositPlayer(player, money);
-                }
+            if (money != 0) {
+              i.getEconomy().depositPlayer(player, money);
+            }
 
-                for (String key :
-                    Objects.requireNonNull(section.getConfigurationSection("items"))
-                        .getKeys(false)) {
-                  player
-                      .getInventory()
-                      .addItem(
-                          ItemDeserializer.deserialize(
-                              Objects.requireNonNull(
-                                  section.getConfigurationSection("items." + key))));
-                }
+            for (String key :
+                Objects.requireNonNull(section.getConfigurationSection("items")).getKeys(false)) {
+              player
+                  .getInventory()
+                  .addItem(
+                      ItemDeserializer.deserialize(
+                          Objects.requireNonNull(section.getConfigurationSection("items." + key))));
+            }
 
-                for (String cmd : section.getStringList("commands")) {
-                  Bukkit.dispatchCommand(
-                      Bukkit.getConsoleSender(),
-                      cmd.replace("%player%", player.getName()).replace("%reward%", name));
-                }
+            for (String cmd : section.getStringList("commands")) {
+              Bukkit.dispatchCommand(
+                  Bukkit.getConsoleSender(),
+                  cmd.replace("%player%", player.getName()).replace("%reward%", name));
+            }
 
-                MessageUtils.tell(
-                    player,
-                    Objects.requireNonNull(i.getMessages().getString("reward-claimed"))
-                        .replace("%reward%", name));
+            MessageUtils.tell(
+                player,
+                Objects.requireNonNull(i.getMessages().getString("reward-claimed"))
+                    .replace("%reward%", name));
 
-                player.closeInventory();
-              });
-
-      setItem(button);
-
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-
-          if (!getOpenInventories().containsKey(player.getUniqueId())) {
-            this.cancel();
-            return;
-          }
-
-          setItem(
-              button.getSlot(),
-              ItemCreator.quickBuild(
-                  ItemCreator.getMaterial(Objects.requireNonNull(section.getString("material"))),
-                  Objects.requireNonNull(name),
-                  section.getStringList("lore")),
-              button.getConsumer());
-        }
-      }.runTaskTimer(i, 20L, 20L);
+            player.closeInventory();
+          });
     }
 
     open(player);

@@ -21,6 +21,7 @@ gui:
     cooldown-lore:
       - "&cThis reward is currently on cooldown."
       - "&cCome back in &e%remaining%&c."
+      - "&f&o[ Click to refresh. ]"
 
 # List of reclaimable rewards.
 # The order of rewards matters. The plugin will go from top to bottom of this list to find a reward for the player.
