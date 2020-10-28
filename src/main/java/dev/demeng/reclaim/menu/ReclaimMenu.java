@@ -88,7 +88,8 @@ public class ReclaimMenu extends Menu {
 
             for (String cmd : section.getStringList("commands")) {
               Bukkit.dispatchCommand(
-                  Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
+                  Bukkit.getConsoleSender(),
+                  cmd.replace("%player%", player.getName()).replace("%reward%", name));
             }
 
             MessageUtils.tell(
