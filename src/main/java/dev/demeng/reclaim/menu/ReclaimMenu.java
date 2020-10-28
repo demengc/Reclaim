@@ -2,11 +2,8 @@ package dev.demeng.reclaim.menu;
 
 import dev.demeng.demlib.item.ItemCreator;
 import dev.demeng.demlib.menu.Menu;
-import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.demlib.time.TimeFormatter;
 import dev.demeng.reclaim.Reclaim;
-import dev.demeng.reclaim.util.ItemDeserializer;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -65,38 +62,7 @@ public class ReclaimMenu extends Menu {
               return;
             }
 
-            i.getManager()
-                .setCooldown(
-                    player.getUniqueId(),
-                    reward,
-                    System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
-
-            final double money = section.getDouble("money");
-
-            if (money != 0) {
-              i.getEconomy().depositPlayer(player, money);
-            }
-
-            for (String key :
-                Objects.requireNonNull(section.getConfigurationSection("items")).getKeys(false)) {
-              player
-                  .getInventory()
-                  .addItem(
-                      ItemDeserializer.deserialize(
-                          Objects.requireNonNull(section.getConfigurationSection("items." + key))));
-            }
-
-            for (String cmd : section.getStringList("commands")) {
-              Bukkit.dispatchCommand(
-                  Bukkit.getConsoleSender(),
-                  cmd.replace("%player%", player.getName()).replace("%reward%", name));
-            }
-
-            MessageUtils.tell(
-                player,
-                Objects.requireNonNull(i.getMessages().getString("reward-claimed"))
-                    .replace("%reward%", name));
-
+            i.getManager().claim(player, reward);
             player.closeInventory();
           });
     }

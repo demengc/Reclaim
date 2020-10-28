@@ -16,3 +16,15 @@ invalid-args: "&eIncorrect usage! Did you mean: &f%usage%"
 
 # After a reward is claimed. Use %id% for the name of the reward.
 reward-claimed: "&eYou have claimed your &f%reward% &ereward!"
+
+# If the player does not have permission for the reclaim.
+# This is used if the reclaim is requested via command (not GUI).
+manual-permission: "&eYou do not have permission to reclaim that."
+
+# If the player has an active cooldown.
+# This is used if the reclaim is requested via command (not GUI).
+# Use %remaining% for the remaining amount of time.
+manual-cooldown: "&ePlease wait &f%remaining% &ebefore reclaiming again."
+
+# If the requested reward is invalid.
+invalid-reward: "&f%reward% &eis not a valid reward."

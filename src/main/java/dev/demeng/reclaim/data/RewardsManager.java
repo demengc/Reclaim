@@ -2,8 +2,11 @@ package dev.demeng.reclaim.data;
 
 import dev.demeng.demlib.message.MessageUtils;
 import dev.demeng.reclaim.Reclaim;
+import dev.demeng.reclaim.util.ItemDeserializer;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -105,5 +108,47 @@ public class RewardsManager {
     }
 
     return -1;
+  }
+
+  public void claim(Player player, String reward) {
+
+    final ConfigurationSection section =
+        i.getSettings().getConfigurationSection("rewards." + reward);
+    Objects.requireNonNull(section);
+
+    final String name = section.getString("name");
+    Objects.requireNonNull(name);
+
+    i.getManager()
+        .setCooldown(
+            player.getUniqueId(),
+            reward,
+            System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
+
+    final double money = section.getDouble("money");
+
+    if (money != 0) {
+      i.getEconomy().depositPlayer(player, money);
+    }
+
+    for (String key :
+        Objects.requireNonNull(section.getConfigurationSection("items")).getKeys(false)) {
+      player
+          .getInventory()
+          .addItem(
+              ItemDeserializer.deserialize(
+                  Objects.requireNonNull(section.getConfigurationSection("items." + key))));
+    }
+
+    for (String cmd : section.getStringList("commands")) {
+      Bukkit.dispatchCommand(
+          Bukkit.getConsoleSender(),
+          cmd.replace("%player%", player.getName()).replace("%reward%", name));
+    }
+
+    MessageUtils.tell(
+        player,
+        Objects.requireNonNull(i.getMessages().getString("reward-claimed"))
+            .replace("%reward%", name));
   }
 }
