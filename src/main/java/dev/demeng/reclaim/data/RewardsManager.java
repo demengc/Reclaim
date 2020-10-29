@@ -119,11 +119,13 @@ public class RewardsManager {
     final String name = section.getString("name");
     Objects.requireNonNull(name);
 
-    i.getManager()
-        .setCooldown(
-            player.getUniqueId(),
-            reward,
-            System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
+    if (!player.hasPermission("reclaim.bypass")) {
+      i.getManager()
+          .setCooldown(
+              player.getUniqueId(),
+              reward,
+              System.currentTimeMillis() + (section.getLong("cooldown") * 1000));
+    }
 
     final double money = section.getDouble("money");
 
